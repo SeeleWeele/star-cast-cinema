@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Cast Cinema - Cartelera, Asientos y Boletos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html" class="brand-logo"><img src="título.png" alt="Star Cast Cinema"></a>
+        <button type="button" id="menu-toggle" class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+        <nav id="main-nav" aria-label="Navegación principal">
+            <ul class="nav-list">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html" class="active">Cartelera y Boletos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="consultas.html">Consultas BD</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- PASO 1: MAPA DE ASIENTOS (10 FILAS X 6 COLUMNAS) -->
+        <section id="seccion-mapa" class="form-section">
+            <header class="form-header">
+                <h1>1. Selecciona tus Asientos en Sala</h1>
+                <p>Elige tus butacas en el mapa (10 filas &times; 6 columnas) y presiona <strong>Confirmar Asientos</strong> para llenar tus datos y generar tu ticket.</p>
+            </header>
+
+            <section class="cinema-hall" aria-label="Mapa de sala Star Cast Cinema">
+                <header class="screen-container">
+                    <span class="curved-screen">PANTALLA</span>
+                    <small class="screen-glow">Frente de la Sala</small>
+                </header>
+
+                <ul class="color-legend">
+                    <li><span class="dot general"></span> General ($85)</li>
+                    <li><span class="dot vip"></span> VIP ($160)</li>
+                    <li><span class="dot selected"></span> Tu selección</li>
+                    <li><span class="dot occupied"></span> Ocupado</li>
+                </ul>
+
+                <fieldset class="hall-zone general-zone">
+                    <legend>ZONA GENERAL (FILAS A – F) — $85.00 MXN</legend>
+                    <ol id="grid-general" class="seats-grid"></ol>
+                </fieldset>
+
+                <fieldset class="hall-zone vip-zone">
+                    <legend>★ ZONA VIP RECLINABLE (FILAS G – J) — $160.00 MXN ★</legend>
+                    <ol id="grid-vip" class="seats-grid"></ol>
+                </fieldset>
+
+                <footer class="hall-footer">
+                    <p>Asientos seleccionados (<span id="contador-asientos">0</span>): <strong id="resumen-asientos">Ninguno</strong></p>
+                    <p>Total estimado: <output id="resumen-total">$0.00 MXN</output></p>
+                    <menu class="hall-cta">
+                        <li>
+                            <button type="button" id="btn-confirmar-asientos" class="btn-primary btn-confirm-seats" disabled>
+                                Confirmar Asientos y Continuar
+                            </button>
+                        </li>
+                    </menu>
+                </footer>
+            </section>
+        </section>
+
+        <!-- PASO 2: FORMULARIO DE COMPRA -->
+        <section id="seccion-formulario" class="form-section" hidden>
+            <header class="form-header">
+                <h2>2. Completa tu Compra y Genera tu Ticket</h2>
+                <p>Verifica tu función y datos personales para emitir tus boletos.</p>
+            </header>
+
+            <aside id="booking-feedback" class="form-feedback" role="alert" hidden></aside>
+
+            <form id="booking-form" action="#" method="post" class="ticket-form" novalidate>
+                <fieldset>
+                    <legend>Datos del Cliente</legend>
+
+                    <label for="nombre">Nombre Completo *</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Zuria Esmeralda Reyes Ortiz" required minlength="5">
+
+                    <label for="correo">Correo Electrónico *</label>
+                    <input type="email" id="correo" name="correo" placeholder="cliente@ejemplo.com" required>
+
+                    <label for="celular">Número de Celular (10 dígitos) *</label>
+                    <input type="tel" id="celular" name="celular" placeholder="4771234567" pattern="[0-9]{10}" maxlength="10" required>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Detalles de Compra</legend>
+
+                    <label for="funcion">Función / Película *</label>
+                    <select id="funcion" name="funcion" required>
+                        <option value="">-- Selecciona una función --</option>
+                        <option value="El Fantasma del Escenario">El Fantasma del Escenario (18:00 / 20:30)</option>
+                        <option value="Odisea Galáctica">Odisea Galáctica (16:15 / 21:00)</option>
+                        <option value="Noche de Estreno">Noche de Estreno (19:00 / 22:00)</option>
+                        <option value="Sinfonía Nocturna">Sinfonía Nocturna (15:30 / 18:45)</option>
+                    </select>
+
+                    <label for="asientos">Asiento(s) Confirmados *</label>
+                    <input type="text" id="asientos" name="asientos" readonly required>
+
+                    <label for="zona">Desglose de Zona y Costo Total *</label>
+                    <input type="text" id="zona" name="zona" readonly required>
+
+                    <label for="notas">Comentarios Adicionales</label>
+                    <textarea id="notas" name="notas" rows="2" placeholder="Opcional..."></textarea>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Pago con Tarjeta</legend>
+
+                    <label for="tarjeta">Número de Tarjeta (16 dígitos) *</label>
+                    <input type="text" id="tarjeta" name="tarjeta" placeholder="1234567812345678" pattern="[0-9]{16}" maxlength="16" required>
+                </fieldset>
+
+                <menu class="form-actions-row">
+                    <li><button type="button" id="btn-modificar-asientos" class="btn-secondary">Cambiar Asientos</button></li>
+                    <li><button type="submit" class="btn-primary btn-submit">Confirmar Pago y Generar Ticket</button></li>
+                </menu>
+            </form>
+
+            <!-- TICKET DIGITAL -->
+            <article id="ticket-digital" class="digital-ticket" hidden>
+                <header>
+                    <h2>🎟️ Ticket Confirmado — Star Cast Cinema</h2>
+                    <p>Folio ID: <strong id="ticket-id">#SCC-1001</strong></p>
+                </header>
+                <ul class="ticket-details">
+                    <li><strong>Cliente:</strong> <span id="t-nombre"></span></li>
+                    <li><strong>Correo:</strong> <span id="t-correo"></span></li>
+                    <li><strong>Celular:</strong> <span id="t-celular"></span></li>
+                    <li><strong>Función:</strong> <span id="t-funcion"></span></li>
+                    <li><strong>Asientos:</strong> <span id="t-asientos"></span></li>
+                    <li><strong>Total Pagado:</strong> <span id="t-zona"></span></li>
+                    <li><strong>Fecha de Compra:</strong> <span id="t-fecha"></span></li>
+                </ul>
+            </article>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- CARTELERA DISPONIBLE -->
+        <section class="catalog-header">
+            <h2>Cartelera de Cine y Teatro</h2>
+            <p>Consulta horarios y precios: <strong>Zona General ($85.00 MXN)</strong> o <strong>Zona VIP ($160.00 MXN)</strong>.</p>
+        </section>
+
+        <section class="catalog-section" aria-label="Funciones disponibles">
+            <article class="movie-card">
+                <figure class="movie-poster">
+                    <img src="https://placehold.co/400x550/18181b/eab308?text=El+Fantasma+del+Escenario" alt="Cartel El Fantasma del Escenario">
+                    <figcaption>Obra Teatral • Sala Principal</figcaption>
+                </figure>
+                <header class="movie-info">
+                    <h3>El Fantasma del Escenario</h3>
+                    <p class="genre">Teatro Musical / Drama</p>
+                    <p class="price">General: <strong>$85</strong> | VIP: <strong>$160</strong></p>
+                </header>
+                <footer class="movie-actions">
+                    <time datetime="18:00">18:00 hrs</time>
+                    <time datetime="20:30">20:30 hrs</time>
+                    <button type="button" class="btn-primary btn-elegir-funcion" data-funcion="El Fantasma del Escenario">Elegir Función</button>
+                </footer>
+            </article>
+
+            <article class="movie-card">
+                <figure class="movie-poster">
+                    <img src="https://placehold.co/400x550/18181b/38bdf8?text=Odisea+Galactica" alt="Cartel Odisea Galáctica">
+                    <figcaption>Estreno Cine • Clasificación B</figcaption>
+                </figure>
+                <header class="movie-info">
+                    <h3>Odisea Galáctica</h3>
+                    <p class="genre">Ciencia Ficción / Aventura</p>
+                    <p class="price">General: <strong>$85</strong> | VIP: <strong>$160</strong></p>
+                </header>
+                <footer class="movie-actions">
+                    <time datetime="16:15">16:15 hrs</time>
+                    <time datetime="21:00">21:00 hrs</time>
+                    <button type="button" class="btn-primary btn-elegir-funcion" data-funcion="Odisea Galáctica">Elegir Función</button>
+                </footer>
+            </article>
+
+            <article class="movie-card">
+                <figure class="movie-poster">
+                    <img src="https://placehold.co/400x550/18181b/ef4444?text=Noche+de+Estreno" alt="Cartel Noche de Estreno">
+                    <figcaption>Cine de Autor • Clasificación B15</figcaption>
+                </figure>
+                <header class="movie-info">
+                    <h3>Noche de Estreno</h3>
+                    <p class="genre">Suspenso / Misterio</p>
+                    <p class="price">General: <strong>$85</strong> | VIP: <strong>$160</strong></p>
+                </header>
+                <footer class="movie-actions">
+                    <time datetime="19:00">19:00 hrs</time>
+                    <time datetime="22:00">22:00 hrs</time>
+                    <button type="button" class="btn-primary btn-elegir-funcion" data-funcion="Noche de Estreno">Elegir Función</button>
+                </footer>
+            </article>
+
+            <article class="movie-card">
+                <figure class="movie-poster">
+                    <img src="https://placehold.co/400x550/18181b/a855f7?text=Sinfonia+Nocturna" alt="Cartel Sinfonía Nocturna">
+                    <figcaption>Función Especial • Todo Público</figcaption>
+                </figure>
+                <header class="movie-info">
+                    <h3>Sinfonía Nocturna</h3>
+                    <p class="genre">Cine Concierto / Familiar</p>
+                    <p class="price">General: <strong>$85</strong> | VIP: <strong>$160</strong></p>
+                </header>
+                <footer class="movie-actions">
+                    <time datetime="15:30">15:30 hrs</time>
+                    <time datetime="18:45">18:45 hrs</time>
+                    <button type="button" class="btn-primary btn-elegir-funcion" data-funcion="Sinfonía Nocturna">Elegir Función</button>
+                </footer>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Star Cast Cinema | Reyes Ortiz Zuria Esmeralda &amp; Vázquez Medina Pedro Antonio (5°A Programación).</p>
+        <nav aria-label="Enlaces rápidos">
+            <ul class="footer-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Cartelera y Boletos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="consultas.html">Consultas BD</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

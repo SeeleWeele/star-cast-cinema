@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Cast Cinema - Consulta de Base de Datos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html" class="brand-logo"><img src="título.png" alt="Star Cast Cinema"></a>
+        <button type="button" id="menu-toggle" class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
+        <nav id="main-nav" aria-label="Navegación principal">
+            <ul class="nav-list">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Cartelera y Boletos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="consultas.html" class="active">Consultas BD</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="catalog-header">
+            <h1>Panel de Consulta — Base de Datos</h1>
+            <p>Visualiza en tiempo real los <strong>boletos vendidos</strong>, <strong>mensajes de contacto</strong> y <strong>cartelera</strong> almacenados en MySQL (XAMPP).</p>
+        </section>
+
+        <!-- Tarjetas de resumen estadístico -->
+        <section aria-label="Resumen general de base de datos">
+            <ul class="features-grid stats-grid">
+                <li>
+                    <article class="feature-card">
+                        <h3>🎟️ Tickets Registrados</h3>
+                        <p class="stat-number" id="stat-tickets">0</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="feature-card">
+                        <h3>💰 Ingresos Acumulados</h3>
+                        <p class="stat-number" id="stat-ingresos">$0.00 MXN</p>
+                    </article>
+                </li>
+                <li>
+                    <article class="feature-card">
+                        <h3>✉️ Mensajes Recibidos</h3>
+                        <p class="stat-number" id="stat-mensajes">0</p>
+                    </article>
+                </li>
+            </ul>
+        </section>
+
+        <hr class="section-divider">
+
+        <!-- Buscador y controles -->
+        <section class="db-toolbar" aria-label="Filtros de consulta">
+            <form id="filtro-bd-form" class="search-bar-form">
+                <label for="busqueda-bd" class="sr-only">Buscar por folio, cliente o función</label>
+                <input type="search" id="busqueda-bd" placeholder="Buscar por folio (#SCC-1001), cliente o película...">
+                <button type="submit" class="btn-primary">Buscar</button>
+                <button type="button" id="btn-recargar-bd" class="btn-secondary">Actualizar Todo</button>
+            </form>
+        </section>
+
+        <aside id="db-feedback" class="form-feedback" role="alert" hidden></aside>
+
+        <!-- Tabla 1: Tickets Vendidos -->
+        <section class="db-panel" aria-labelledby="titulo-tabla-tickets">
+            <header class="db-panel-header">
+                <h2 id="titulo-tabla-tickets">🎟️ Historial de Boletos Vendidos (Tabla: tickets)</h2>
+            </header>
+            <figure class="table-responsive">
+                <table class="cinema-table">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Cliente</th>
+                            <th>Contacto</th>
+                            <th>Función</th>
+                            <th>Asientos</th>
+                            <th>Total</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-tickets-body">
+                        <tr>
+                            <td colspan="7">Cargando registros desde MySQL...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </section>
+
+        <!-- Tabla 2: Mensajes de Contacto -->
+        <section class="db-panel" aria-labelledby="titulo-tabla-mensajes">
+            <header class="db-panel-header">
+                <h2 id="titulo-tabla-mensajes">✉️ Mensajes de Atención al Cliente (Tabla: mensajes_contacto)</h2>
+            </header>
+            <figure class="table-responsive">
+                <table class="cinema-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo / Teléfono</th>
+                            <th>Motivo</th>
+                            <th>Mensaje</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-mensajes-body">
+                        <tr>
+                            <td colspan="6">Cargando mensajes desde MySQL...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Star Cast Cinema | Reyes Ortiz Zuria Esmeralda &amp; Vázquez Medina Pedro Antonio (5°A Programación).</p>
+        <nav aria-label="Enlaces rápidos">
+            <ul class="footer-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Cartelera y Boletos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="consultas.html">Consultas BD</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
